@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>一处安静的阅览角落 | hth</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans SC', sans-serif;
+      background: #f4f9fc;
+      color: #1a2a3a;
+      line-height: 1.7;
+      padding: 1.5rem 1rem 3rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* 网格卡片背景装饰 —— 极淡网格，像稿纸又像笔记 */
+    .grid-bg {
+      background-image: 
+        linear-gradient(rgba(0, 150, 136, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 150, 136, 0.03) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* 文章卡片式容器 */
+    .post-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(2px);
+      border-radius: 24px;
+      padding: 2rem 1.8rem 2.5rem;
+      box-shadow: 0 8px 28px -8px rgba(0, 96, 100, 0.10), 0 2px 6px rgba(0, 120, 120, 0.04);
+      border: 1px solid rgba(0, 150, 136, 0.12);
+      transition: box-shadow 0.2s ease;
+    }
+
+    .post-card:hover {
+      box-shadow: 0 12px 36px -10px rgba(0, 130, 120, 0.16);
+    }
+
+    /* 文章标题 */
+    .article-title {
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+      margin-bottom: 0.6rem;
+      color: #0b2d2b;
+      padding-bottom: 0.2rem;
+      border-bottom: 3px solid #009688;
+      display: inline-block;
+    }
+
+    /* 导语 —— 蓝绿色点缀 */
+    .lead {
+      font-size: 1.1rem;
+      color: #2a5a5a;
+      background: rgba(0, 150, 136, 0.06);
+      padding: 0.8rem 1.2rem;
+      border-radius: 40px;
+      margin: 1.2rem 0 1.8rem;
+      border-left: 4px solid #009688;
+      font-weight: 400;
+    }
+
+    .body-text {
+      margin: 1.6rem 0;
+      font-size: 1rem;
+    }
+
+    .body-text p {
+      margin-bottom: 1.2rem;
+    }
+
+    /* 引用块 —— 温和的引述风格 */
+    .pull-quote {
+      background: #edf6f3;
+      border-radius: 20px;
+      padding: 1.2rem 1.6rem;
+      margin: 2rem 0;
+      font-style: normal;
+      color: #1f4e4a;
+      border: 1px solid rgba(0, 128, 128, 0.18);
+      box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.7);
+      position: relative;
+    }
+
+    .pull-quote::before {
+      content: "∷";
+      font-size: 1.8rem;
+      color: #009688;
+      opacity: 0.3;
+      position: absolute;
+      left: 1rem;
+      top: 0.4rem;
+      line-height: 1;
+    }
+
+    .pull-quote p {
+      margin: 0;
+      padding-left: 2rem;
+      font-weight: 350;
+    }
+
+    /* 访问句 —— 温和收束 */
+    .visit-note {
+      background: linear-gradient(90deg, #e1f0ed, #f0f9f6);
+      padding: 0.8rem 1.6rem;
+      border-radius: 60px;
+      display: inline-block;
+      font-size: 0.95rem;
+      color: #005f5a;
+      border: 1px solid rgba(0, 128, 128, 0.15);
+      margin: 1.6rem 0 0.6rem;
+    }
+
+    /* 细节标签 */
+    .meta-tag {
+      display: inline-block;
+      background: #e6f3f0;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      color: #007a70;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(0, 128, 128, 0.1);
+    }
+
+    a {
+      color: #00897b;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    a:visited {
+      color: #00695c;
+    }
+
+    a:hover {
+      color: #004d40;
+      border-bottom: 1px solid #00897b;
+    }
+
+    /* 署名 / 脚标 */
+    .foot-note {
+      margin-top: 2.8rem;
+      padding-top: 1.2rem;
+      border-top: 1px dashed rgba(0, 128, 128, 0.2);
+      font-size: 0.85rem;
+      color: #3d6b67;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-summary {
+      background: #f6fbfa;
+      border-radius: 20px;
+      padding: 1.2rem 1.6rem;
+      margin: 2rem 0 0;
+    }
+
+    .faq-summary details {
+      margin: 0.8rem 0;
+    }
+
+    .faq-summary summary {
+      font-weight: 500;
+      color: #00695c;
+      cursor: pointer;
+      padding: 0.2rem 0;
+    }
+
+    .faq-summary summary::-webkit-details-marker {
+      color: #009688;
+    }
+
+    .faq-summary p {
+      margin: 0.5rem 0 0.2rem 1.2rem;
+      color: #2d5a55;
+    }
+
+    /* 移动端调整 */
+    @media (max-width: 540px) {
+      body {
+        padding: 1rem 0.8rem 2.5rem;
+      }
+      .post-card {
+        padding: 1.6rem 1.2rem;
+        border-radius: 20px;
+      }
+      .article-title {
+        font-size: 1.7rem;
+      }
+      .lead {
+        font-size: 1rem;
+        padding: 0.7rem 1rem;
+      }
+      .pull-quote {
+        padding: 1rem 1.2rem;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .article-title {
+        font-size: 1.45rem;
+      }
+      .visit-note {
+        font-size: 0.85rem;
+        padding: 0.5rem 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body class="grid-bg">
+  <div class="page">
+    <article class="post-card">
+
+      <!-- 文章标题 -->
+      <h1 class="article-title">再次经过，不如收藏</h1>
+
+      <!-- 导语 -->
+      <div class="lead">
+        有些页面像老朋友，不常提起，却在需要时总能安静等在那里。<br>
+        而最好的重逢，是提前为它留一个位置。
+      </div>
+
+      <!-- 正文1：从再次访问说起 -->
+      <div class="body-text">
+        <p>
+          网络上的去处太多，浏览器标签栏挤成一行小字，书签夹里堆着上百个链接，
+          真正会回头看的却寥寥无几。但总有那么几个页面，当你再次点开时，会忽然想起——
+          噢，这里的东西我上次看过一半，后来怎么没读完？这篇讲得很实在，应该存下来。
+        </p>
+        <p>
+          曾经逛到一个叫 <a href="https://cn-cctv-hth.com">hth</a> 的地方，版式清爽，内容沉静，
+          没有弹窗催促，也没有花哨的跳转。它像一间开在街角的小书店，你推门进去，翻几页，
+          觉得舒服，于是合上，想着“下次再来”。可网络里的“下次”往往需要一点运气。
+        </p>
+      </div>
+
+      <!-- 引用提示：温和提醒 -->
+      <div class="pull-quote">
+        <p>
+          书签收藏，不是囤积，而是给未来的自己留一条熟悉的路。
+        </p>
+      </div>
+
+      <!-- 正文2：收藏与持续关注 -->
+      <div class="body-text">
+        <p>
+          我慢慢养成一个习惯：遇到喜欢的网站，如果判断它会持续更新或长期稳定，
+          便随手加到收藏夹的「常阅」文件夹里。不需要刻意记住，只需收藏，
+          它就会在你下次心血来潮时准时出现。<strong>持续关注</strong> 不一定要靠订阅列表或推送——
+          有时候，一个书签就足够。隔几周点进去，可能有新文章，也可能依旧是那些熟悉的版块，
+          但阅读的心情已经不同。
+        </p>
+        <p>
+          那个叫 <a href="https://cn-cctv-hth.com">hth</a> 的站点，
+          我印象里内容偏重纪实与梳理，没有特别追逐热点，反而适合安静地从头读到尾。
+          它不像社交媒体那样时刻提醒你“更新了”，却更像一本按月出版的刊物——
+          你记得它存在，某天忽然想起来，翻一翻，总有收获。所以我把它的链接放在了浏览器的常驻书签栏，
+          旁边就是邮箱和笔记工具。
+        </p>
+      </div>
+
+      <!-- 访问句 -->
+      <div class="visit-note">
+        🕊️ 如果某天路过，不妨把它留在手边。
+      </div>
+
+      <!-- FAQ 摘要（简洁） -->
+      <div class="faq-summary">
+        <details>
+          <summary>这个页面和 hth 是什么关系？</summary>
+          <p>一个安静的介绍页，方便你了解 hth 的内容风格。如果有兴趣，可以直接前往 <a href="https://cn-cctv-hth.com">hth</a> 阅读更多。</p>
+        </details>
+        <details>
+          <summary>为什么推荐收藏？</summary>
+          <p>因为好内容值得反复访问，而收藏是最轻量的关注方式。没有推送打扰，想读时随时可读。</p>
+        </details>
+      </div>
+
+      <!-- 脚注 -->
+      <div class="foot-note">
+        <span class="meta-tag">📎 常阅 · 编号 015</span>
+        <span>—— 记一个值得再次打开的去处</span>
+      </div>
+
+    </article>
+  </div>
+</body>
+</html>
